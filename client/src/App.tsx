@@ -6,12 +6,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { type TeamConfig } from "@/lib/team-config";
 import { type Language } from "@/lib/i18n";
-import TeamSelector from "@/components/team-selector";
+import ModernTeamSelector from "@/components/modern-team-selector";
 import Navigation from "@/components/navigation";
 import Dashboard from "@/pages/dashboard";
 import Trivia from "@/pages/trivia";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
+import LiveDashboard from "@/components/live-dashboard";
 
 function App() {
   const [selectedTeam, setSelectedTeam] = useState<TeamConfig | null>(null);
@@ -31,7 +32,7 @@ function App() {
         <Toaster />
         <div className="min-h-screen bg-gray-900">
           {!selectedTeam ? (
-            <TeamSelector onTeamSelect={handleTeamSelect} />
+            <ModernTeamSelector onTeamSelect={handleTeamSelect} />
           ) : (
             <div className="flex h-screen overflow-hidden">
               <Navigation 
@@ -47,11 +48,11 @@ function App() {
                   <div className="pt-16 lg:pt-0">
                     <Router>
                       <Route path="/" component={() => <Redirect to="/dashboard" />} />
-                      <Route path="/dashboard" component={() => <Dashboard selectedTeam={selectedTeam} language={language} />} />
-                      <Route path="/live" component={() => <Home />} />
-                      <Route path="/standings" component={() => <Home />} />
-                      <Route path="/team-profile" component={() => <Home />} />
-                      <Route path="/statistics" component={() => <Home />} />
+                      <Route path="/dashboard" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/live" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/standings" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/team-profile" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/statistics" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/trivia" component={() => <Trivia selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/settings" component={() => <Home />} />
                       <Route path="/404" component={NotFound} />

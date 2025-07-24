@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { scraper } from "./services/scraper";
+import { multiScraper } from "./services/multi-scraper";
 import { 
   insertMatchSchema, 
   insertStandingSchema, 
@@ -81,11 +82,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Scraping endpoint
+  // Scraping endpoint with multi-source support
   app.post("/api/scrape", async (req, res) => {
     try {
-      console.log("Starting data scraping...");
-      const scrapedData = await scraper.scrapeGoogleSports();
+      console.log("Starting multi-source data scraping...");
+      const scrapedData = await multiScraper.scrapeFromMultipleSources();
       
       // Clear existing data
       await storage.clearAllData();

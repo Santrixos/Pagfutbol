@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { type Browser, type Page } from 'puppeteer';
 import { type Team, type Match, type Standing, type Player } from '@shared/schema';
 
 export interface ScrapedMatchData {
@@ -43,13 +43,25 @@ export interface ScrapedData {
 }
 
 export class FootballScraper {
-  private browser: puppeteer.Browser | null = null;
+  private browser: Browser | null = null;
 
   async initialize() {
     if (!this.browser) {
       this.browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process',
+          '--disable-gpu',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor'
+        ],
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined
       });
     }
   }
@@ -80,15 +92,15 @@ export class FootballScraper {
       const players = await this.scrapePlayers(page);
 
       return { matches, standings, players };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Scraping error:', error);
-      throw new Error(`Failed to scrape data: ${error.message}`);
+      throw new Error(`Failed to scrape data: ${error?.message || 'Unknown error'}`);
     } finally {
       await page.close();
     }
   }
 
-  private async scrapeMatches(page: puppeteer.Page): Promise<ScrapedMatchData[]> {
+  private async scrapeMatches(page: Page): Promise<ScrapedMatchData[]> {
     try {
       // Navigate to Liga MX fixtures
       await page.goto('https://www.google.com/search?q=liga+mx+fixtures+2024', {
@@ -171,7 +183,7 @@ export class FootballScraper {
     }
   }
 
-  private async scrapeStandings(page: puppeteer.Page): Promise<ScrapedStandingData[]> {
+  private async scrapeStandings(page: Page): Promise<ScrapedStandingData[]> {
     try {
       await page.goto('https://www.google.com/search?q=liga+mx+table+standings+2024', {
         waitUntil: 'networkidle2'
@@ -215,7 +227,7 @@ export class FootballScraper {
     }
   }
 
-  private async scrapePlayers(page: puppeteer.Page): Promise<ScrapedPlayerData[]> {
+  private async scrapePlayers(page: Page): Promise<ScrapedPlayerData[]> {
     try {
       await page.goto('https://www.google.com/search?q=liga+mx+top+scorers+2024', {
         waitUntil: 'networkidle2'
