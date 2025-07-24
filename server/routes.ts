@@ -1,8 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { scraper } from "./services/scraper";
-import { multiScraper } from "./services/multi-scraper";
+import improvedScraper from "./services/improved-scraper";
 import { 
   insertMatchSchema, 
   insertStandingSchema, 

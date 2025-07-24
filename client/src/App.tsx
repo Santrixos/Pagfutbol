@@ -13,6 +13,7 @@ import Trivia from "@/pages/trivia";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
 import LiveDashboard from "@/components/live-dashboard";
+import TeamProfile from "@/components/team-profile";
 
 function App() {
   const [selectedTeam, setSelectedTeam] = useState<TeamConfig | null>(null);
@@ -51,8 +52,8 @@ function App() {
                       <Route path="/dashboard" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/live" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/standings" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
-                      <Route path="/team-profile" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
-                      <Route path="/statistics" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/team-profile" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/statistics" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/trivia" component={() => <Trivia selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/settings" component={() => <Home />} />
                       <Route path="/404" component={NotFound} />

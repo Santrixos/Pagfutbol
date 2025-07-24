@@ -33,7 +33,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio Azteca",
     capacity: 87000,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/Club-America-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Estadio_Azteca_01.jpg/800px-Estadio_Azteca_01.jpg",
+    imageUrl: "https://www.americanistas.com.mx/sites/default/files/styles/escudo_equipo/public/2023-06/amerestadio.jpg",
     facts: [
       "Es el equipo más exitoso de México con 13 títulos de liga",
       "El Estadio Azteca es uno de los más grandes del mundo",
@@ -56,7 +56,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio Akron",
     capacity: 49850,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/Guadalajara-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Estadio_Akron_vista_general.jpg/800px-Estadio_Akron_vista_general.jpg",
+    imageUrl: "https://www.chivas.com/sites/default/files/styles/escudo_equipo/public/2023-06/chivasestadio.jpg",
     facts: [
       "Solo puede fichar jugadores mexicanos por tradición",
       "Es el segundo equipo más exitoso con 12 títulos",
@@ -79,7 +79,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio Azteca",
     capacity: 87000,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/Cruz-Azul-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Estadio_Azteca_01.jpg/800px-Estadio_Azteca_01.jpg",
+    imageUrl: "https://www.cruzazul.com.mx/sites/default/files/styles/escudo_equipo/public/2023-06/cruzazulestadio.jpg",
     facts: [
       "Rompió una maldición de 23 años sin título en 2021",
       "Es conocido como 'La Máquina' por su juego organizado",
@@ -102,7 +102,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio Olímpico Universitario",
     capacity: 72000,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/Pumas-UNAM-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Estadio_Olimpico_Universitario_Ciudad_Universitaria.jpg/800px-Estadio_Olimpico_Universitario_Ciudad_Universitaria.jpg",
+    imageUrl: "https://www.pumas.mx/sites/default/files/styles/escudo_equipo/public/2023-06/pumasestadio.jpg",
     facts: [
       "Es el equipo de la Universidad Nacional Autónoma de México",
       "Su estadio albergó los Juegos Olímpicos de 1968",
@@ -125,7 +125,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio Universitario",
     capacity: 42000,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/Tigres-UANL-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Estadio_Universitario_desde_arriba.jpg/800px-Estadio_Universitario_desde_arriba.jpg",
+    imageUrl: "https://www.tigres.com.mx/sites/default/files/styles/escudo_equipo/public/2023-06/tigresestadio.jpg",
     facts: [
       "Ha ganado 8 títulos de liga en los últimos 20 años",
       "Llegó a la final del Mundial de Clubes en 2020",
@@ -148,7 +148,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio BBVA",
     capacity: 53500,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/CF-Monterrey-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Estadio_BBVA.jpg/800px-Estadio_BBVA.jpg",
+    imageUrl: "https://www.rayados.com/sites/default/files/styles/escudo_equipo/public/2023-06/rayestadio.jpg",
     facts: [
       "Su estadio BBVA es considerado el más moderno de México",
       "Es uno de los equipos más exitosos de la última década",
@@ -171,7 +171,7 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     stadium: "Estadio Corona",
     capacity: 30000,
     logoUrl: "https://logos-world.net/wp-content/uploads/2020/06/Santos-Laguna-Logo.png",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Estadio_Corona_-_panoramica.jpg/800px-Estadio_Corona_-_panoramica.jpg",
+    imageUrl: "https://www.santos.mx/sites/default/files/styles/escudo_equipo/public/2023-06/santosestadio.jpg",
     facts: [
       "Es famoso por desarrollar jóvenes talentos mexicanos",
       "Ganó 6 títulos de liga en 20 años",
@@ -182,30 +182,60 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     rivals: ["Tigres", "León", "Atlas"]
   }
 };
+  },
+  queretaro: {
+    slug: "queretaro",
+    name: "Querétaro FC",
+    nickname: "Los Gallos Blancos",
+    primaryColor: "#000000",
+    secondaryColor: "#1F4E79",
+    icon: "🐓",
+    gradient: "from-black via-gray-800 to-blue-700"
+  },
+  tijuana: {
+    slug: "tijuana",
+    name: "Club Tijuana",
+    nickname: "Los Xolos",
+    primaryColor: "#E50022",
+    secondaryColor: "#000000",
+    icon: "🐕",
+    gradient: "from-red-600 via-red-800 to-black"
+  },
+  necaxa: {
+    slug: "necaxa",
+    name: "Necaxa",
+    nickname: "Los Rayos",
+    primaryColor: "#E50022",
+    secondaryColor: "#FFFFFF",
+    icon: "⚡",
+    gradient: "from-red-600 via-red-700 to-white"
+  },
+  "atletico-san-luis": {
+    slug: "atletico-san-luis",
+    name: "Atlético de San Luis",
+    nickname: "Los Potosinos",
+    primaryColor: "#FF0000",
+    secondaryColor: "#FFFFFF",
+    icon: "🔴",
+    gradient: "from-red-500 via-red-600 to-white"
+  }
+};
 
-export function getTeamBySlug(slug: string): TeamConfig | null {
-  return TEAM_CONFIGS[slug] || null;
-}
-
-export function getAllTeams(): TeamConfig[] {
-  return Object.values(TEAM_CONFIGS);
+export function getTeamConfig(slug: string): TeamConfig | undefined {
+  return TEAM_CONFIGS[slug];
 }
 
 export function hexToHsl(hex: string): string {
-  // Remove # if present
-  hex = hex.replace('#', '');
-  
-  // Parse RGB values
-  const r = parseInt(hex.substr(0, 2), 16) / 255;
-  const g = parseInt(hex.substr(2, 2), 16) / 255;
-  const b = parseInt(hex.substr(4, 2), 16) / 255;
-  
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   let h = 0;
   let s = 0;
   const l = (max + min) / 2;
-  
+
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -217,6 +247,6 @@ export function hexToHsl(hex: string): string {
     }
     h /= 6;
   }
-  
-  return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+
+  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
 }
