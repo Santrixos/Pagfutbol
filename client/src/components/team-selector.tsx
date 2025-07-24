@@ -4,18 +4,28 @@ import { TEAM_CONFIGS, type TeamConfig } from "@/lib/team-config";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { type Team } from "@shared/schema";
+import LanguageSelector from "./language-selector";
+import { useTranslations, type Language, getStoredLanguage, setStoredLanguage } from "@/lib/i18n";
 
 interface TeamSelectorProps {
-  onTeamSelect: (teamConfig: TeamConfig) => void;
+  onTeamSelect: (teamConfig: TeamConfig, language: Language) => void;
 }
 
 export default function TeamSelector({ onTeamSelect }: TeamSelectorProps) {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [language, setLanguage] = useState<Language>(getStoredLanguage());
 
   const { data: teams } = useQuery<Team[]>({
     queryKey: ["/api/teams"],
   });
+
+  const t = useTranslations(language);
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    setLanguage(newLanguage);
+    setStoredLanguage(newLanguage);
+  };
 
   const handleTeamClick = (teamSlug: string) => {
     const teamConfig = TEAM_CONFIGS[teamSlug];
@@ -23,7 +33,7 @@ export default function TeamSelector({ onTeamSelect }: TeamSelectorProps) {
       setSelectedTeam(teamSlug);
       setIsAnimating(true);
       setTimeout(() => {
-        onTeamSelect(teamConfig);
+        onTeamSelect(teamConfig, language);
       }, 800);
     }
   };
@@ -59,27 +69,35 @@ export default function TeamSelector({ onTeamSelect }: TeamSelectorProps) {
           <div className="text-center mb-12">
             <div className="inline-block mb-6">
               <h1 className="text-6xl md:text-8xl font-black mb-4 bg-gradient-to-r from-green-400 via-white via-red-500 to-green-400 bg-clip-text text-transparent animate-pulse">
-                LIGA MX
+                {t.teamSelector.title}
               </h1>
               <div className="h-2 bg-gradient-to-r from-green-500 via-white to-red-500 rounded-full mx-auto mb-4"></div>
             </div>
             
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-              Mexican Football Style
+              {t.teamSelector.subtitle}
             </h2>
             <p className="text-xl md:text-2xl text-gray-300 mb-8">
-              Elige tu equipo favorito y personaliza tu experiencia
+              {t.teamSelector.description}
             </p>
           </div>
 
           {/* Team Selection */}
           <div className="bg-black/40 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-gray-600/50 shadow-2xl">
+            {/* Language Selector */}
+            <div className="flex justify-end mb-6">
+              <LanguageSelector 
+                currentLanguage={language} 
+                onLanguageChange={handleLanguageChange} 
+              />
+            </div>
+            
             <div className="text-center mb-10">
               <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-green-400 to-red-500 bg-clip-text text-transparent">
-                ¿A qué equipo le vas?
+                {t.teamSelector.question}
               </h3>
               <p className="text-gray-400 text-lg">
-                Selecciona tu equipo para obtener una experiencia personalizada con los colores oficiales
+                {t.teamSelector.description}
               </p>
             </div>
             
@@ -133,21 +151,21 @@ export default function TeamSelector({ onTeamSelect }: TeamSelectorProps) {
               <div className="flex items-center justify-center space-x-4 text-gray-400 text-sm mb-4">
                 <span className="flex items-center">
                   <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Colores oficiales
+                  {t.teamSelector.officialColors}
                 </span>
                 <span className="flex items-center">
                   <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                  Contenido personalizado
+                  {t.teamSelector.personalizedContent}
                 </span>
                 <span className="flex items-center">
                   <div className="w-2 h-2 bg-white rounded-full mr-2"></div>
-                  Datos en vivo
+                  {t.teamSelector.liveData}
                 </span>
               </div>
               
               {teams && (
                 <p className="text-gray-500 text-xs">
-                  {teams.length} equipos disponibles • Liga MX Clausura 2024
+                  {teams.length} {t.teamSelector.teamsAvailable} • {t.teamSelector.season}
                 </p>
               )}
             </div>
@@ -160,7 +178,7 @@ export default function TeamSelector({ onTeamSelect }: TeamSelectorProps) {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mb-4"></div>
-            <p className="text-white text-xl font-bold">Preparando tu experiencia...</p>
+            <p className="text-white text-xl font-bold">{t.teamSelector.preparing}</p>
             {selectedTeam && (
               <p className="text-gray-300 mt-2">
                 {TEAM_CONFIGS[selectedTeam]?.name}
