@@ -70,24 +70,24 @@ export class MemStorage implements IStorage {
 
   private initializeDefaultTeams() {
     const ligaMXTeams: InsertTeam[] = [
-      { name: "Club América", nickname: "Las Águilas", slug: "america", primaryColor: "#FFD700", secondaryColor: "#1F4E79", stadium: "Estadio Azteca", city: "Ciudad de México" },
-      { name: "Chivas Guadalajara", nickname: "El Rebaño", slug: "chivas", primaryColor: "#E50022", secondaryColor: "#FFFFFF", stadium: "Estadio Akron", city: "Guadalajara" },
-      { name: "Cruz Azul", nickname: "La Máquina", slug: "cruz-azul", primaryColor: "#1F4E79", secondaryColor: "#FFFFFF", stadium: "Estadio Azul", city: "Ciudad de México" },
-      { name: "Pumas UNAM", nickname: "Los Pumas", slug: "pumas", primaryColor: "#003366", secondaryColor: "#FFD700", stadium: "Estadio Olímpico", city: "Ciudad de México" },
-      { name: "Tigres UANL", nickname: "Los Tigres", slug: "tigres", primaryColor: "#FFB300", secondaryColor: "#003366", stadium: "Estadio Universitario", city: "Monterrey" },
-      { name: "CF Monterrey", nickname: "Los Rayados", slug: "monterrey", primaryColor: "#003366", secondaryColor: "#FFFFFF", stadium: "Estadio BBVA", city: "Monterrey" },
-      { name: "Santos Laguna", nickname: "Los Guerreros", slug: "santos", primaryColor: "#00A651", secondaryColor: "#FFFFFF", stadium: "Estadio Corona", city: "Torreón" },
-      { name: "Club León", nickname: "La Fiera", slug: "leon", primaryColor: "#00A651", secondaryColor: "#FFD700", stadium: "Estadio León", city: "León" },
-      { name: "FC Juárez", nickname: "Los Bravos", slug: "juarez", primaryColor: "#E50022", secondaryColor: "#000000", stadium: "Estadio Olímpico Benito Juárez", city: "Ciudad Juárez" },
-      { name: "Atlas FC", nickname: "Los Zorros", slug: "atlas", primaryColor: "#E50022", secondaryColor: "#000000", stadium: "Estadio Jalisco", city: "Guadalajara" },
-      { name: "CF Pachuca", nickname: "Los Tuzos", slug: "pachuca", primaryColor: "#1F4E79", secondaryColor: "#FFFFFF", stadium: "Estadio Hidalgo", city: "Pachuca" },
-      { name: "Deportivo Toluca", nickname: "Los Diablos Rojos", slug: "toluca", primaryColor: "#E50022", secondaryColor: "#FFFFFF", stadium: "Estadio Nemesio Díez", city: "Toluca" },
-      { name: "Mazatlán FC", nickname: "Los Cañoneros", slug: "mazatlan", primaryColor: "#8B008B", secondaryColor: "#FFD700", stadium: "Estadio El Encanto", city: "Mazatlán" },
-      { name: "Club Puebla", nickname: "La Franja", slug: "puebla", primaryColor: "#1F4E79", secondaryColor: "#FFFFFF", stadium: "Estadio Cuauhtémoc", city: "Puebla" },
-      { name: "Querétaro FC", nickname: "Los Gallos Blancos", slug: "queretaro", primaryColor: "#000000", secondaryColor: "#1F4E79", stadium: "Estadio La Corregidora", city: "Querétaro" },
-      { name: "Club Tijuana", nickname: "Los Xolos", slug: "tijuana", primaryColor: "#E50022", secondaryColor: "#000000", stadium: "Estadio Caliente", city: "Tijuana" },
-      { name: "Necaxa", nickname: "Los Rayos", slug: "necaxa", primaryColor: "#E50022", secondaryColor: "#FFFFFF", stadium: "Estadio Victoria", city: "Aguascalientes" },
-      { name: "Club de Fútbol América", nickname: "Las Águilas", slug: "america", primaryColor: "#FFD700", secondaryColor: "#1F4E79", stadium: "Estadio Azteca", city: "Ciudad de México" }
+      { name: "Club América", nickname: "Las Águilas", slug: "america", primaryColor: "#FFD700", secondaryColor: "#003366", stadium: "Estadio Azteca", city: "Ciudad de México", logo: "https://logoeps.com/wp-content/uploads/2013/03/club-america-vector-logo.png" },
+      { name: "Chivas Guadalajara", nickname: "El Rebaño", slug: "chivas", primaryColor: "#E50022", secondaryColor: "#FFFFFF", stadium: "Estadio Akron", city: "Guadalajara", logo: "https://logoeps.com/wp-content/uploads/2013/03/chivas-vector-logo.png" },
+      { name: "Cruz Azul", nickname: "La Máquina", slug: "cruz-azul", primaryColor: "#1F4E79", secondaryColor: "#FFFFFF", stadium: "Estadio Ciudad de los Deportes", city: "Ciudad de México", logo: "https://logoeps.com/wp-content/uploads/2013/03/cruz-azul-vector-logo.png" },
+      { name: "Pumas UNAM", nickname: "Los Pumas", slug: "pumas", primaryColor: "#003366", secondaryColor: "#FFD700", stadium: "Estadio Olímpico Universitario", city: "Ciudad de México", logo: "https://logoeps.com/wp-content/uploads/2013/03/pumas-unam-vector-logo.png" },
+      { name: "Tigres UANL", nickname: "Los Tigres", slug: "tigres", primaryColor: "#FFB300", secondaryColor: "#003366", stadium: "Estadio Universitario", city: "Monterrey", logo: "https://logoeps.com/wp-content/uploads/2013/03/tigres-uanl-vector-logo.png" },
+      { name: "CF Monterrey", nickname: "Los Rayados", slug: "monterrey", primaryColor: "#003366", secondaryColor: "#FFFFFF", stadium: "Estadio BBVA", city: "Monterrey", logo: "https://logoeps.com/wp-content/uploads/2013/03/monterrey-vector-logo.png" },
+      { name: "Santos Laguna", nickname: "Los Guerreros", slug: "santos", primaryColor: "#00A651", secondaryColor: "#FFFFFF", stadium: "Estadio Corona", city: "Torreón", logo: "https://logoeps.com/wp-content/uploads/2013/03/santos-laguna-vector-logo.png" },
+      { name: "Club León", nickname: "La Fiera", slug: "leon", primaryColor: "#00A651", secondaryColor: "#FFD700", stadium: "Estadio León", city: "León", logo: "https://logoeps.com/wp-content/uploads/2013/03/leon-vector-logo.png" },
+      { name: "FC Juárez", nickname: "Los Bravos", slug: "juarez", primaryColor: "#E50022", secondaryColor: "#000000", stadium: "Estadio Olímpico Benito Juárez", city: "Ciudad Juárez", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/FC_Ju%C3%A1rez_logo.svg/1200px-FC_Ju%C3%A1rez_logo.svg.png" },
+      { name: "Atlas FC", nickname: "Los Zorros", slug: "atlas", primaryColor: "#E50022", secondaryColor: "#000000", stadium: "Estadio Jalisco", city: "Guadalajara", logo: "https://logoeps.com/wp-content/uploads/2013/03/atlas-vector-logo.png" },
+      { name: "CF Pachuca", nickname: "Los Tuzos", slug: "pachuca", primaryColor: "#1F4E79", secondaryColor: "#FFFFFF", stadium: "Estadio Hidalgo", city: "Pachuca", logo: "https://logoeps.com/wp-content/uploads/2013/03/pachuca-vector-logo.png" },
+      { name: "Deportivo Toluca", nickname: "Los Diablos Rojos", slug: "toluca", primaryColor: "#E50022", secondaryColor: "#FFFFFF", stadium: "Estadio Nemesio Díez", city: "Toluca", logo: "https://logoeps.com/wp-content/uploads/2013/03/toluca-vector-logo.png" },
+      { name: "Mazatlán FC", nickname: "Los Cañoneros", slug: "mazatlan", primaryColor: "#8B008B", secondaryColor: "#FFD700", stadium: "Estadio El Encanto", city: "Mazatlán", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Mazatl%C3%A1n_FC_logo.svg/1200px-Mazatl%C3%A1n_FC_logo.svg.png" },
+      { name: "Club Puebla", nickname: "La Franja", slug: "puebla", primaryColor: "#1F4E79", secondaryColor: "#FFFFFF", stadium: "Estadio Cuauhtémoc", city: "Puebla", logo: "https://logoeps.com/wp-content/uploads/2013/03/puebla-vector-logo.png" },
+      { name: "Querétaro FC", nickname: "Los Gallos Blancos", slug: "queretaro", primaryColor: "#000000", secondaryColor: "#1F4E79", stadium: "Estadio La Corregidora", city: "Querétaro", logo: "https://logoeps.com/wp-content/uploads/2013/03/queretaro-vector-logo.png" },
+      { name: "Club Tijuana", nickname: "Los Xolos", slug: "tijuana", primaryColor: "#E50022", secondaryColor: "#000000", stadium: "Estadio Caliente", city: "Tijuana", logo: "https://logoeps.com/wp-content/uploads/2013/03/tijuana-vector-logo.png" },
+      { name: "Necaxa", nickname: "Los Rayos", slug: "necaxa", primaryColor: "#E50022", secondaryColor: "#FFFFFF", stadium: "Estadio Victoria", city: "Aguascalientes", logo: "https://logoeps.com/wp-content/uploads/2013/03/necaxa-vector-logo.png" },
+      { name: "Atlético de San Luis", nickname: "Los Potosinos", slug: "atletico-san-luis", primaryColor: "#FF0000", secondaryColor: "#FFFFFF", stadium: "Estadio Alfonso Lastras", city: "San Luis Potosí", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Atletico_San_Luis_logo.svg/1200px-Atletico_San_Luis_logo.svg.png" }
     ];
 
     ligaMXTeams.forEach(team => {

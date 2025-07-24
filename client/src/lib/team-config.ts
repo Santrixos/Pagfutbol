@@ -16,9 +16,9 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     name: "Club América",
     nickname: "Las Águilas",
     primaryColor: "#FFD700",
-    secondaryColor: "#1F4E79",
-    icon: "fas fa-crown",
-    gradient: "from-yellow-400 to-blue-800"
+    secondaryColor: "#003366",
+    icon: "🦅",
+    gradient: "from-yellow-400 via-yellow-500 to-blue-900"
   },
   chivas: {
     slug: "chivas",
@@ -26,8 +26,8 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "El Rebaño",
     primaryColor: "#E50022",
     secondaryColor: "#FFFFFF",
-    icon: "fas fa-mountain",
-    gradient: "from-red-600 to-white"
+    icon: "🐐",
+    gradient: "from-red-600 via-red-700 to-white"
   },
   "cruz-azul": {
     slug: "cruz-azul",
@@ -35,8 +35,8 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "La Máquina",
     primaryColor: "#1F4E79",
     secondaryColor: "#FFFFFF",
-    icon: "fas fa-cross",
-    gradient: "from-blue-700 to-blue-900"
+    icon: "⚙️",
+    gradient: "from-blue-700 via-blue-800 to-blue-900"
   },
   pumas: {
     slug: "pumas",
@@ -44,8 +44,8 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "Los Pumas",
     primaryColor: "#003366",
     secondaryColor: "#FFD700",
-    icon: "fas fa-cat",
-    gradient: "from-blue-900 to-yellow-500"
+    icon: "🐾",
+    gradient: "from-blue-900 via-blue-800 to-yellow-500"
   },
   tigres: {
     slug: "tigres",
@@ -53,8 +53,8 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "Los Tigres",
     primaryColor: "#FFB300",
     secondaryColor: "#003366",
-    icon: "fas fa-paw",
-    gradient: "from-yellow-500 to-blue-900"
+    icon: "🐅",
+    gradient: "from-yellow-500 via-orange-500 to-blue-900"
   },
   monterrey: {
     slug: "monterrey",
@@ -62,8 +62,8 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "Los Rayados",
     primaryColor: "#003366",
     secondaryColor: "#FFFFFF",
-    icon: "fas fa-mountain",
-    gradient: "from-blue-900 to-gray-200"
+    icon: "🏔️",
+    gradient: "from-blue-900 via-slate-700 to-gray-200"
   },
   santos: {
     slug: "santos",
@@ -71,8 +71,8 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "Los Guerreros",
     primaryColor: "#00A651",
     secondaryColor: "#FFFFFF",
-    icon: "fas fa-leaf",
-    gradient: "from-green-600 to-white"
+    icon: "⚔️",
+    gradient: "from-green-600 via-green-700 to-white"
   },
   leon: {
     slug: "leon",
@@ -80,8 +80,98 @@ export const TEAM_CONFIGS: Record<string, TeamConfig> = {
     nickname: "La Fiera",
     primaryColor: "#00A651",
     secondaryColor: "#FFD700",
-    icon: "fas fa-shield-alt",
-    gradient: "from-green-700 to-yellow-400"
+    icon: "🦁",
+    gradient: "from-green-700 via-green-600 to-yellow-400"
+  },
+  juarez: {
+    slug: "juarez",
+    name: "FC Juárez",
+    nickname: "Los Bravos",
+    primaryColor: "#E50022",
+    secondaryColor: "#000000",
+    icon: "🎯",
+    gradient: "from-red-600 via-red-700 to-black"
+  },
+  atlas: {
+    slug: "atlas",
+    name: "Atlas FC",
+    nickname: "Los Zorros",
+    primaryColor: "#E50022",
+    secondaryColor: "#000000",
+    icon: "🦊",
+    gradient: "from-red-600 via-red-800 to-black"
+  },
+  pachuca: {
+    slug: "pachuca",
+    name: "CF Pachuca",
+    nickname: "Los Tuzos",
+    primaryColor: "#1F4E79",
+    secondaryColor: "#FFFFFF",
+    icon: "⚡",
+    gradient: "from-blue-700 via-blue-800 to-white"
+  },
+  toluca: {
+    slug: "toluca",
+    name: "Deportivo Toluca",
+    nickname: "Los Diablos Rojos",
+    primaryColor: "#E50022",
+    secondaryColor: "#FFFFFF",
+    icon: "😈",
+    gradient: "from-red-600 via-red-700 to-white"
+  },
+  mazatlan: {
+    slug: "mazatlan",
+    name: "Mazatlán FC",
+    nickname: "Los Cañoneros",
+    primaryColor: "#8B008B",
+    secondaryColor: "#FFD700",
+    icon: "⚓",
+    gradient: "from-purple-700 via-purple-800 to-yellow-400"
+  },
+  puebla: {
+    slug: "puebla",
+    name: "Club Puebla",
+    nickname: "La Franja",
+    primaryColor: "#1F4E79",
+    secondaryColor: "#FFFFFF",
+    icon: "🏛️",
+    gradient: "from-blue-700 via-blue-800 to-white"
+  },
+  queretaro: {
+    slug: "queretaro",
+    name: "Querétaro FC",
+    nickname: "Los Gallos Blancos",
+    primaryColor: "#000000",
+    secondaryColor: "#1F4E79",
+    icon: "🐓",
+    gradient: "from-black via-gray-800 to-blue-700"
+  },
+  tijuana: {
+    slug: "tijuana",
+    name: "Club Tijuana",
+    nickname: "Los Xolos",
+    primaryColor: "#E50022",
+    secondaryColor: "#000000",
+    icon: "🐕",
+    gradient: "from-red-600 via-red-800 to-black"
+  },
+  necaxa: {
+    slug: "necaxa",
+    name: "Necaxa",
+    nickname: "Los Rayos",
+    primaryColor: "#E50022",
+    secondaryColor: "#FFFFFF",
+    icon: "⚡",
+    gradient: "from-red-600 via-red-700 to-white"
+  },
+  "atletico-san-luis": {
+    slug: "atletico-san-luis",
+    name: "Atlético de San Luis",
+    nickname: "Los Potosinos",
+    primaryColor: "#FF0000",
+    secondaryColor: "#FFFFFF",
+    icon: "🔴",
+    gradient: "from-red-500 via-red-600 to-white"
   }
 };
 

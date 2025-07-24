@@ -15,7 +15,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const teams = await storage.getTeams();
       res.json(teams);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch teams", error: error.message });
     }
   });
@@ -27,7 +27,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Team not found" });
       }
       res.json(team);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch team", error: error.message });
     }
   });
@@ -37,7 +37,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const matches = await storage.getMatches();
       res.json(matches);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch matches", error: error.message });
     }
   });
@@ -46,7 +46,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const liveMatches = await storage.getLiveMatches();
       res.json(liveMatches);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch live matches", error: error.message });
     }
   });
@@ -55,7 +55,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const upcomingMatches = await storage.getUpcomingMatches();
       res.json(upcomingMatches);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch upcoming matches", error: error.message });
     }
   });
@@ -65,7 +65,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const standings = await storage.getStandings();
       res.json(standings);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch standings", error: error.message });
     }
   });
@@ -76,7 +76,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
       const topScorers = await storage.getTopScorers(limit);
       res.json(topScorers);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Failed to fetch top scorers", error: error.message });
     }
   });
@@ -204,7 +204,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Scraping failed:", error);
       res.status(500).json({ 
         message: "Failed to scrape data", 
-        error: error.message 
+        error: (error as any).message 
       });
     }
   });

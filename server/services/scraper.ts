@@ -1,10 +1,45 @@
 import puppeteer from 'puppeteer';
 import { type Team, type Match, type Standing, type Player } from '@shared/schema';
 
+export interface ScrapedMatchData {
+  homeTeamName?: string;
+  awayTeamName?: string;
+  homeScore?: number | null;
+  awayScore?: number | null;
+  status?: string;
+  matchDate?: Date;
+  venue?: string;
+  minute?: number | null;
+  competition?: string;
+}
+
+export interface ScrapedStandingData {
+  teamName?: string;
+  position?: number;
+  matchesPlayed?: number;
+  wins?: number;
+  draws?: number;
+  losses?: number;
+  goalsFor?: number;
+  goalsAgainst?: number;
+  goalDifference?: number;
+  points?: number;
+  season?: string;
+}
+
+export interface ScrapedPlayerData {
+  name?: string;
+  teamName?: string;
+  position?: string;
+  goals?: number;
+  assists?: number;
+  appearances?: number;
+}
+
 export interface ScrapedData {
-  matches: Partial<Match>[];
-  standings: Partial<Standing>[];
-  players: Partial<Player>[];
+  matches: ScrapedMatchData[];
+  standings: ScrapedStandingData[];
+  players: ScrapedPlayerData[];
 }
 
 export class FootballScraper {
@@ -53,7 +88,7 @@ export class FootballScraper {
     }
   }
 
-  private async scrapeMatches(page: puppeteer.Page): Promise<Partial<Match>[]> {
+  private async scrapeMatches(page: puppeteer.Page): Promise<ScrapedMatchData[]> {
     try {
       // Navigate to Liga MX fixtures
       await page.goto('https://www.google.com/search?q=liga+mx+fixtures+2024', {
@@ -136,7 +171,7 @@ export class FootballScraper {
     }
   }
 
-  private async scrapeStandings(page: puppeteer.Page): Promise<Partial<Standing>[]> {
+  private async scrapeStandings(page: puppeteer.Page): Promise<ScrapedStandingData[]> {
     try {
       await page.goto('https://www.google.com/search?q=liga+mx+table+standings+2024', {
         waitUntil: 'networkidle2'
@@ -180,7 +215,7 @@ export class FootballScraper {
     }
   }
 
-  private async scrapePlayers(page: puppeteer.Page): Promise<Partial<Player>[]> {
+  private async scrapePlayers(page: puppeteer.Page): Promise<ScrapedPlayerData[]> {
     try {
       await page.goto('https://www.google.com/search?q=liga+mx+top+scorers+2024', {
         waitUntil: 'networkidle2'
