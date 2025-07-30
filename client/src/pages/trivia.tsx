@@ -1,282 +1,452 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Sparkles, 
-  Trophy, 
-  Users, 
-  MapPin,
-  Calendar,
-  Star,
-  Shuffle,
-  RefreshCw
-} from "lucide-react";
-import { useTranslations, type Language } from "@/lib/i18n";
-import { type TeamConfig } from "@/lib/team-config";
-import { getRandomTeamFacts, getTeamTrivia, type TeamFact } from "@/lib/team-facts";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { type TeamConfig, getAllTeams } from "@/lib/team-config";
+import { getPlayersByTeam } from "@/lib/team-players";
+import { type Language } from "@/lib/i18n";
+import { FuturisticBackground, GlassCard, NeonButton } from "@/components/futuristic-background";
 
 interface TriviaProps {
   selectedTeam: TeamConfig;
   language: Language;
 }
 
+interface TriviaQuestion {
+  question: string;
+  options: string[];
+  correct: number;
+  explanation: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+}
+
 export default function Trivia({ selectedTeam, language }: TriviaProps) {
-  const [currentFacts, setCurrentFacts] = useState<TeamFact[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const t = useTranslations(language);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
 
-  const teamTrivia = getTeamTrivia(selectedTeam.slug);
+  const allTeams = getAllTeams();
+  const teamPlayers = getPlayersByTeam(selectedTeam.slug);
 
-  // Load initial facts
-  useEffect(() => {
-    if (selectedTeam) {
-      setCurrentFacts(getRandomTeamFacts(selectedTeam.slug, 5));
+  // Comprehensive trivia questions for Liga MX
+  const generateQuestions = (): TriviaQuestion[] => {
+    const easyQuestions: TriviaQuestion[] = [
+      {
+        question: `¿En qué año fue fundado ${selectedTeam.name}?`,
+        options: [
+          (selectedTeam.founded - 10).toString(),
+          selectedTeam.founded.toString(),
+          (selectedTeam.founded + 5).toString(),
+          (selectedTeam.founded + 15).toString()
+        ],
+        correct: 1,
+        explanation: `${selectedTeam.name} fue fundado en ${selectedTeam.founded}.`,
+        difficulty: 'easy'
+      },
+      {
+        question: `¿Cuál es el apodo de ${selectedTeam.name}?`,
+        options: [
+          "Los Leones",
+          selectedTeam.nickname,
+          "Los Tigres", 
+          "Las Águilas"
+        ],
+        correct: 1,
+        explanation: `El apodo de ${selectedTeam.name} es ${selectedTeam.nickname}.`,
+        difficulty: 'easy'
+      },
+      {
+        question: `¿En qué ciudad juega ${selectedTeam.name}?`,
+        options: [
+          "Guadalajara",
+          selectedTeam.city,
+          "Monterrey",
+          "Puebla"
+        ],
+        correct: 1,
+        explanation: `${selectedTeam.name} juega en ${selectedTeam.city}.`,
+        difficulty: 'easy'
+      },
+      {
+        question: `¿Cuál es el estadio de ${selectedTeam.name}?`,
+        options: [
+          "Estadio Azteca",
+          selectedTeam.stadium,
+          "Estadio Akron",
+          "Estadio BBVA"
+        ],
+        correct: 1,
+        explanation: `${selectedTeam.name} juega en el ${selectedTeam.stadium}.`,
+        difficulty: 'easy'
+      }
+    ];
+
+    const mediumQuestions: TriviaQuestion[] = [
+      {
+        question: `¿Cuál es la capacidad del ${selectedTeam.stadium}?`,
+        options: [
+          (selectedTeam.capacity - 5000).toLocaleString(),
+          selectedTeam.capacity.toLocaleString(),
+          (selectedTeam.capacity + 10000).toLocaleString(),
+          (selectedTeam.capacity + 20000).toLocaleString()
+        ],
+        correct: 1,
+        explanation: `El ${selectedTeam.stadium} tiene una capacidad de ${selectedTeam.capacity.toLocaleString()} espectadores.`,
+        difficulty: 'medium'
+      },
+      {
+        question: `¿Cuántos títulos de liga ha ganado ${selectedTeam.name}?`,
+        options: [
+          selectedTeam.achievements[0]?.split(' ')[0] || "0",
+          "15",
+          "20",
+          "25"
+        ],
+        correct: 0,
+        explanation: `${selectedTeam.name} ha ganado ${selectedTeam.achievements[0] || "varios títulos"}.`,
+        difficulty: 'medium'
+      },
+      {
+        question: `¿Quién es el máximo goleador actual de ${selectedTeam.name}?`,
+        options: teamPlayers.length > 0 ? [
+          teamPlayers.sort((a, b) => b.goals - a.goals)[0]?.name || "Jugador 1",
+          teamPlayers[1]?.name || "Jugador 2",
+          teamPlayers[2]?.name || "Jugador 3",
+          teamPlayers[3]?.name || "Jugador 4"
+        ] : ["Jugador A", "Jugador B", "Jugador C", "Jugador D"],
+        correct: 0,
+        explanation: `El máximo goleador actual es ${teamPlayers.sort((a, b) => b.goals - a.goals)[0]?.name || "uno de los delanteros del equipo"}.`,
+        difficulty: 'medium'
+      }
+    ];
+
+    const hardQuestions: TriviaQuestion[] = [
+      {
+        question: `¿Cuál es uno de los principales rivales de ${selectedTeam.name}?`,
+        options: [
+          selectedTeam.rivals[0] || "América",
+          "Barcelona",
+          "Real Madrid",
+          "Manchester United"
+        ],
+        correct: 0,
+        explanation: `Uno de los principales rivales de ${selectedTeam.name} es ${selectedTeam.rivals[0] || "un equipo tradicional de Liga MX"}.`,
+        difficulty: 'hard'
+      },
+      {
+        question: `¿Cuál de estos datos es cierto sobre ${selectedTeam.name}?`,
+        options: [
+          selectedTeam.facts[0] || "Es un equipo histórico",
+          "Nunca ha descendido de categoría",
+          "Fue fundado en Estados Unidos",
+          "Solo juega partidos internacionales"
+        ],
+        correct: 0,
+        explanation: selectedTeam.facts[0] || `Este es un dato histórico importante sobre ${selectedTeam.name}.`,
+        difficulty: 'hard'
+      }
+    ];
+
+    // Mix questions based on difficulty
+    let questions: TriviaQuestion[] = [];
+    switch (difficulty) {
+      case 'easy':
+        questions = easyQuestions.slice(0, 5);
+        break;
+      case 'medium':
+        questions = [...easyQuestions.slice(0, 2), ...mediumQuestions.slice(0, 3)];
+        break;
+      case 'hard':
+        questions = [...easyQuestions.slice(0, 1), ...mediumQuestions.slice(0, 2), ...hardQuestions.slice(0, 2)];
+        break;
     }
-  }, [selectedTeam]);
 
-  const refreshFacts = () => {
-    setIsLoading(true);
+    // Add general Liga MX questions
+    const generalQuestions: TriviaQuestion[] = [
+      {
+        question: "¿Cuántos equipos participan actualmente en Liga MX?",
+        options: ["16", "18", "20", "22"],
+        correct: 1,
+        explanation: "Liga MX está compuesta por 18 equipos en la máxima categoría.",
+        difficulty: 'easy'
+      },
+      {
+        question: "¿Cuál es el equipo con más títulos en Liga MX?",
+        options: ["América", "Chivas", "Cruz Azul", "Pumas"],
+        correct: 0,
+        explanation: "Club América es el equipo con más títulos de liga en México.",
+        difficulty: 'medium'
+      }
+    ];
+
+    return [...questions, ...generalQuestions.slice(0, 2)];
+  };
+
+  const [questions] = useState(() => generateQuestions());
+
+  const handleAnswer = (answerIndex: number) => {
+    setSelectedAnswer(answerIndex);
+    
     setTimeout(() => {
-      setCurrentFacts(getRandomTeamFacts(selectedTeam.slug, 5));
-      setIsLoading(false);
-    }, 500);
+      if (answerIndex === questions[currentQuestion].correct) {
+        setScore(score + 1);
+      }
+      
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+      } else {
+        setShowResult(true);
+      }
+    }, 1500);
   };
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case 'legendary':
-        return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
-      case 'rare':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
-      default:
-        return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
-    }
+  const resetGame = () => {
+    setCurrentQuestion(0);
+    setScore(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setGameStarted(false);
   };
 
-  const getRarityIcon = (rarity: string) => {
-    switch (rarity) {
-      case 'legendary':
-        return '🌟';
-      case 'rare':
-        return '💎';
-      default:
-        return '📝';
-    }
+  const startGame = (selectedDifficulty: 'easy' | 'medium' | 'hard') => {
+    setDifficulty(selectedDifficulty);
+    setGameStarted(true);
   };
 
-  if (!teamTrivia) {
+  if (!gameStarted) {
     return (
-      <div className="p-6">
-        <Card className="bg-gray-800/50 border-gray-600/30">
-          <CardContent className="p-8 text-center">
-            <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Datos no disponibles</h3>
-            <p className="text-gray-400">No hay información de trivia disponible para este equipo.</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen relative overflow-hidden">
+        <FuturisticBackground />
+        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+          <GlassCard className="max-w-4xl mx-auto text-center p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center justify-center mb-6">
+                <div 
+                  className="w-16 h-16 rounded-full flex items-center justify-center mr-4 text-2xl"
+                  style={{ backgroundColor: selectedTeam.primaryColor }}
+                >
+                  {selectedTeam.icon}
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                  Trivia de {selectedTeam.name}
+                </h1>
+              </div>
+              
+              <p className="text-xl text-gray-300 mb-8">
+                Pon a prueba tus conocimientos sobre {selectedTeam.nickname} y Liga MX
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="cursor-pointer"
+                  onClick={() => startGame('easy')}
+                >
+                  <GlassCard className="p-6 border-2 border-green-400/50 hover:border-green-400">
+                    <h3 className="text-2xl font-bold text-green-400 mb-2">Fácil</h3>
+                    <p className="text-gray-300">Preguntas básicas sobre el equipo</p>
+                    <div className="mt-4 text-green-400 text-3xl">⭐</div>
+                  </GlassCard>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="cursor-pointer"
+                  onClick={() => startGame('medium')}
+                >
+                  <GlassCard className="p-6 border-2 border-yellow-400/50 hover:border-yellow-400">
+                    <h3 className="text-2xl font-bold text-yellow-400 mb-2">Medio</h3>
+                    <p className="text-gray-300">Datos y estadísticas del equipo</p>
+                    <div className="mt-4 text-yellow-400 text-3xl">⭐⭐</div>
+                  </GlassCard>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="cursor-pointer"
+                  onClick={() => startGame('hard')}
+                >
+                  <GlassCard className="p-6 border-2 border-red-400/50 hover:border-red-400">
+                    <h3 className="text-2xl font-bold text-red-400 mb-2">Difícil</h3>
+                    <p className="text-gray-300">Para verdaderos expertos</p>
+                    <div className="mt-4 text-red-400 text-3xl">⭐⭐⭐</div>
+                  </GlassCard>
+                </motion.div>
+              </div>
+
+              <p className="text-sm text-gray-400">
+                Selecciona tu nivel de dificultad para comenzar
+              </p>
+            </motion.div>
+          </GlassCard>
+        </div>
+      </div>
+    );
+  }
+
+  if (showResult) {
+    const percentage = Math.round((score / questions.length) * 100);
+    const getDifficultyColor = () => {
+      switch (difficulty) {
+        case 'easy': return 'text-green-400';
+        case 'medium': return 'text-yellow-400';
+        case 'hard': return 'text-red-400';
+      }
+    };
+
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <FuturisticBackground />
+        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+          <GlassCard className="max-w-2xl mx-auto text-center p-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                ¡Trivia Completada!
+              </h1>
+              
+              <div className="text-6xl mb-4">
+                {percentage >= 90 ? "🏆" : percentage >= 70 ? "🥈" : percentage >= 50 ? "🥉" : "📚"}
+              </div>
+              
+              <p className="text-2xl text-gray-300 mb-2">
+                Puntuación: {score}/{questions.length}
+              </p>
+              
+              <p className="text-xl text-gray-400 mb-2">
+                {percentage}% correcto
+              </p>
+              
+              <p className={`text-lg mb-8 ${getDifficultyColor()}`}>
+                Dificultad: {difficulty === 'easy' ? 'Fácil' : difficulty === 'medium' ? 'Medio' : 'Difícil'}
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <NeonButton
+                    onClick={resetGame}
+                    className="px-8 py-3"
+                  >
+                    Jugar de Nuevo
+                  </NeonButton>
+                </div>
+
+                <div className="mt-8 p-4 bg-gray-800/50 rounded-lg">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    ¿Sabías que...?
+                  </h3>
+                  <p className="text-gray-300 text-sm">
+                    {selectedTeam.facts[Math.floor(Math.random() * selectedTeam.facts.length)]}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </GlassCard>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <div 
-          className={`inline-block bg-gradient-to-br ${selectedTeam.gradient} rounded-3xl p-6 text-white mb-6`}
-        >
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <Sparkles className="w-8 h-8" />
-            <div className="text-4xl">{selectedTeam.icon}</div>
-            <Sparkles className="w-8 h-8" />
-          </div>
-          <h1 className="text-3xl font-black mb-2">Trivia de {selectedTeam.nickname}</h1>
-          <p className="text-lg opacity-90">Descubre los secretos mejor guardados</p>
-        </div>
-      </div>
-
-      {/* Team Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/20">
-          <CardContent className="p-6 text-center">
-            <Calendar className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-            <h3 className="font-bold text-white mb-1">{t.teamFacts.foundation}</h3>
-            <p className="text-2xl font-bold text-blue-400">{teamTrivia.foundation.year}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/20">
-          <CardContent className="p-6 text-center">
-            <MapPin className="w-10 h-10 text-green-400 mx-auto mb-3" />
-            <h3 className="font-bold text-white mb-1">{t.teamFacts.stadium}</h3>
-            <p className="text-lg font-bold text-green-400">{teamTrivia.stadium.name}</p>
-            <p className="text-sm text-gray-400">{teamTrivia.stadium.capacity.toLocaleString()}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-yellow-500/20">
-          <CardContent className="p-6 text-center">
-            <Trophy className="w-10 h-10 text-yellow-400 mx-auto mb-3" />
-            <h3 className="font-bold text-white mb-1">{t.teamFacts.titles}</h3>
-            <p className="text-2xl font-bold text-yellow-400">{teamTrivia.achievements.ligaTitles}</p>
-            <p className="text-sm text-gray-400">Liga MX</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20">
-          <CardContent className="p-6 text-center">
-            <Star className="w-10 h-10 text-purple-400 mx-auto mb-3" />
-            <h3 className="font-bold text-white mb-1">Último Título</h3>
-            <p className="text-2xl font-bold text-purple-400">{teamTrivia.achievements.lastTitle}</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Foundation Story */}
-      <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-600/30">
-        <CardHeader>
-          <CardTitle className="flex items-center text-white">
-            <Calendar className="w-6 h-6 mr-3 text-blue-400" />
-            Historia de la Fundación
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-300 leading-relaxed">
-            {teamTrivia.foundation.story[language]}
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Legendary Players */}
-      {teamTrivia.legends.length > 0 && (
-        <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-600/30">
-          <CardHeader>
-            <CardTitle className="flex items-center text-white">
-              <Users className="w-6 h-6 mr-3 text-gold-400" />
-              {t.teamFacts.legendaryPlayers}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {teamTrivia.legends.map((legend, index) => (
-                <div 
-                  key={index}
-                  className="bg-gradient-to-r from-white/5 to-white/10 rounded-xl p-4 border border-white/10"
-                >
-                  <h4 className="font-bold text-white text-lg mb-1">{legend.name}</h4>
-                  <p className="text-gray-400 text-sm mb-2">{legend.position} • {legend.years}</p>
-                  <p className="text-gray-300 text-sm">{legend.achievements[language]}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Random Facts */}
-      <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-600/30">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center text-white">
-              <Sparkles className="w-6 h-6 mr-3 text-pink-400" />
-              {t.teamFacts.curiosities}
-            </CardTitle>
-            <Button
-              onClick={refreshFacts}
-              disabled={isLoading}
-              variant="outline"
-              size="sm"
-              className="border-pink-500/50 text-pink-400 hover:bg-pink-500/10"
-            >
-              {isLoading ? (
-                <RefreshCw className="w-4 h-4 animate-spin" />
-              ) : (
-                <Shuffle className="w-4 h-4" />
-              )}
-              <span className="ml-2">Nuevos datos</span>
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {currentFacts.map((fact, index) => (
-              <div 
-                key={fact.id}
-                className="bg-gradient-to-r from-white/5 to-white/10 rounded-xl p-4 border border-white/10 transform transition-all duration-300 hover:scale-105"
-              >
-                <div className="flex items-start space-x-4">
-                  <div className="text-3xl">{fact.icon}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge 
-                        variant="secondary" 
-                        className={`text-xs ${getRarityColor(fact.rarity)}`}
-                      >
-                        {getRarityIcon(fact.rarity)} {fact.rarity === 'legendary' ? 'Legendario' : fact.rarity === 'rare' ? 'Raro' : 'Común'}
-                      </Badge>
-                      <Badge variant="outline" className="text-xs border-gray-500/30 text-gray-400">
-                        {fact.category === 'history' ? 'Historia' : 
-                         fact.category === 'stadium' ? 'Estadio' :
-                         fact.category === 'players' ? 'Jugadores' :
-                         fact.category === 'culture' ? 'Cultura' :
-                         fact.category === 'achievements' ? 'Logros' : 'Curiosidad'}
-                      </Badge>
-                    </div>
-                    <p className="text-gray-300 leading-relaxed">{fact.text[language]}</p>
-                  </div>
+    <div className="min-h-screen relative overflow-hidden">
+      <FuturisticBackground />
+      <div className="relative z-10 p-4 pt-20">
+        <div className="max-w-4xl mx-auto">
+          {/* Progress Bar */}
+          <motion.div
+            className="mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <GlassCard className="p-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-white font-semibold">
+                  Pregunta {currentQuestion + 1} de {questions.length}
+                </span>
+                <div className="flex items-center space-x-4">
+                  <span className={`font-semibold ${
+                    difficulty === 'easy' ? 'text-green-400' : 
+                    difficulty === 'medium' ? 'text-yellow-400' : 'text-red-400'
+                  }`}>
+                    {difficulty === 'easy' ? 'Fácil' : difficulty === 'medium' ? 'Medio' : 'Difícil'}
+                  </span>
+                  <span className="text-white font-semibold">
+                    Puntuación: {score}
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <motion.div
+                  className="bg-gradient-to-r from-red-500 to-white h-2 rounded-full"
+                  initial={{ width: "0%" }}
+                  animate={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
+            </GlassCard>
+          </motion.div>
 
-          {currentFacts.length === 0 && (
-            <div className="text-center py-8">
-              <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-400">No hay datos curiosos disponibles para este equipo.</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Rivalries */}
-      {teamTrivia.rivalries.length > 0 && (
-        <Card className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-red-500/20">
-          <CardHeader>
-            <CardTitle className="flex items-center text-white">
-              <Trophy className="w-6 h-6 mr-3 text-red-400" />
-              {t.teamFacts.rivalries}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {teamTrivia.rivalries.map((rivalry, index) => (
-                <div 
-                  key={index}
-                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10"
-                >
-                  <div>
-                    <h4 className="font-bold text-white">{rivalry.name[language]}</h4>
-                    <p className="text-gray-400 text-sm">vs {rivalry.team}</p>
-                  </div>
-                  <Badge 
-                    variant="secondary"
-                    className={`${
-                      rivalry.intensity === 'clasico' 
-                        ? 'bg-red-500/20 text-red-300 border-red-500/30'
-                        : rivalry.intensity === 'high'
-                        ? 'bg-orange-500/20 text-orange-300 border-orange-500/30'
-                        : 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30'
+          {/* Question */}
+          <motion.div
+            key={currentQuestion}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <GlassCard className="p-8 mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
+                {questions[currentQuestion].question}
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {questions[currentQuestion].options.map((option, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => selectedAnswer === null && handleAnswer(index)}
+                    className={`p-4 rounded-lg border-2 transition-all duration-300 text-lg font-semibold ${
+                      selectedAnswer === null
+                        ? "border-gray-600 bg-gray-800/50 hover:border-red-400 hover:bg-red-400/10 text-white"
+                        : selectedAnswer === index
+                        ? index === questions[currentQuestion].correct
+                          ? "border-green-400 bg-green-400/20 text-green-400"
+                          : "border-red-400 bg-red-400/20 text-red-400"
+                        : index === questions[currentQuestion].correct
+                        ? "border-green-400 bg-green-400/20 text-green-400"
+                        : "border-gray-600 bg-gray-800/30 text-gray-400"
                     }`}
+                    disabled={selectedAnswer !== null}
+                    whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
+                    whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
                   >
-                    {rivalry.intensity === 'clasico' ? '🔥 Clásico' : rivalry.intensity === 'high' ? '⚡ Alta' : '💙 Media'}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+                    {option}
+                  </motion.button>
+                ))}
+              </div>
+
+              {selectedAnswer !== null && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 p-4 rounded-lg bg-blue-900/30 border border-blue-400"
+                >
+                  <p className="text-blue-200">
+                    {questions[currentQuestion].explanation}
+                  </p>
+                </motion.div>
+              )}
+            </GlassCard>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

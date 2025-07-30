@@ -80,18 +80,44 @@ export default function ModernTeamSelector({ onTeamSelect }: ModernTeamSelectorP
           transition={{ duration: 1 }}
           className="text-center py-16 px-4"
         >
-          <motion.h1 
-            className="text-6xl md:text-8xl font-bold mb-6 neon-text"
-            style={{
-              background: 'linear-gradient(45deg, #00f5ff, #ff00ff, #00ff00)',
-              backgroundSize: '400% 400%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              animation: 'gradient-shift 3s ease infinite'
-            }}
-          >
-            {t.teamSelector.title}
-          </motion.h1>
+          <motion.div className="text-center mb-8">
+            <motion.h1 
+              className="text-5xl md:text-7xl font-black tracking-tight mb-2"
+              animate={{ 
+                scale: [1, 1.02, 1],
+                filter: ["drop-shadow(0 0 20px rgba(220, 38, 38, 0.5))", "drop-shadow(0 0 40px rgba(220, 38, 38, 0.8))", "drop-shadow(0 0 20px rgba(220, 38, 38, 0.5))"]
+              }}
+              transition={{ 
+                duration: 3, 
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              style={{
+                background: 'linear-gradient(90deg, #DC2626, #FFFFFF, #DC2626)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              THE STYLE OF FOOTBALL
+            </motion.h1>
+            <motion.div 
+              className="text-3xl md:text-5xl font-bold text-red-400"
+              animate={{ 
+                opacity: [0.7, 1, 0.7],
+                scale: [0.95, 1, 0.95],
+                textShadow: ["0 0 10px rgba(248, 113, 113, 0.5)", "0 0 20px rgba(248, 113, 113, 0.8)", "0 0 10px rgba(248, 113, 113, 0.5)"]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5
+              }}
+            >
+              MX
+            </motion.div>
+          </motion.div>
           
           <motion.p 
             className="text-xl md:text-2xl text-cyan-300 max-w-3xl mx-auto mb-8 opacity-90"

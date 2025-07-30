@@ -54,15 +54,17 @@ function App() {
                       <Route path="/dashboard" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/live" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/standings" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/matches" component={() => <LiveDashboard selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/team-profile" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/statistics" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/players" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/trivia" component={() => <Trivia selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/donations" component={() => <DonationsPage />} />
                       <Route path="/betting" component={() => <BettingPage />} />
                       <Route path="/settings" component={() => <Home />} />
                       <Route path="/404" component={NotFound} />
                       <Route>
-                        {(params) => <Redirect to="/404" />}
+                        {(params) => <Redirect to="/dashboard" />}
                       </Route>
                     </Router>
                   </div>
