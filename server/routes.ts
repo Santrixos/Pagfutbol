@@ -2,6 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import improvedScraper from "./services/improved-scraper";
+import { multiScraper } from "./services/multi-scraper";
+import { scraper } from "./services/scraper";
+import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
 import { 
   insertMatchSchema, 
   insertStandingSchema, 
@@ -207,6 +210,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         error: (error as any).message 
       });
     }
+  });
+
+  // PayPal routes
+  app.get("/api/paypal/setup", async (req, res) => {
+    await loadPaypalDefault(req, res);
+  });
+
+  app.post("/api/paypal/order", async (req, res) => {
+    // Request body should contain: { intent, amount, currency }
+    await createPaypalOrder(req, res);
+  });
+
+  app.post("/api/paypal/order/:orderID/capture", async (req, res) => {
+    await capturePaypalOrder(req, res);
   });
 
   // Health check endpoint

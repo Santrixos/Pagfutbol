@@ -12,6 +12,8 @@ import Dashboard from "@/pages/dashboard";
 import Trivia from "@/pages/trivia";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
+import DonationsPage from "@/pages/donations";
+import BettingPage from "@/pages/betting";
 import LiveDashboard from "@/components/live-dashboard";
 import TeamProfile from "@/components/team-profile";
 
@@ -55,6 +57,8 @@ function App() {
                       <Route path="/team-profile" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/statistics" component={() => <TeamProfile selectedTeam={selectedTeam} language={language} />} />
                       <Route path="/trivia" component={() => <Trivia selectedTeam={selectedTeam} language={language} />} />
+                      <Route path="/donations" component={() => <DonationsPage />} />
+                      <Route path="/betting" component={() => <BettingPage />} />
                       <Route path="/settings" component={() => <Home />} />
                       <Route path="/404" component={NotFound} />
                       <Route>

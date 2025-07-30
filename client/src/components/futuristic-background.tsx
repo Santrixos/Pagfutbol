@@ -52,8 +52,8 @@ export function FuturisticBackground() {
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950" />
+      {/* Gradient background with red-black theme */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-red-950 to-black" />
       
       {/* Animated grid */}
       <div className="absolute inset-0 opacity-20">
@@ -89,7 +89,7 @@ export function FuturisticBackground() {
       <motion.div
         className="absolute w-96 h-96 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%)',
           left: mousePosition.x - 192,
           top: mousePosition.y - 192
         }}
@@ -105,7 +105,7 @@ export function FuturisticBackground() {
 
       {/* Scanning lines */}
       <motion.div
-        className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-30"
+        className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-red-400 to-transparent opacity-30"
         animate={{
           y: [0, typeof window !== 'undefined' ? window.innerHeight : 800]
         }}

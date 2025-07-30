@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { type TeamConfig, TEAM_CONFIGS } from "@/lib/team-config";
+import { type TeamConfig, TEAM_CONFIGS, getAllTeams } from "@/lib/team-config";
 import { type Team } from "@shared/schema";
 import { FuturisticBackground, GlassCard, NeonButton } from "@/components/futuristic-background";
 import LanguageSelector from "./language-selector";

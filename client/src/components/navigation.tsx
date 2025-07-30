@@ -14,7 +14,9 @@ import {
   X,
   Sparkles,
   Calendar,
-  Star
+  Star,
+  Heart,
+  DollarSign
 } from "lucide-react";
 import LanguageSelector from "./language-selector";
 import { useTranslations, type Language } from "@/lib/i18n";
@@ -75,6 +77,22 @@ export default function Navigation({ selectedTeam, language, onLanguageChange }:
       color: "text-pink-400",
       bgColor: "bg-pink-500/10",
       badge: "NEW"
+    },
+    { 
+      path: "/donations", 
+      icon: Heart, 
+      label: "Donaciones",
+      color: "text-red-400",
+      bgColor: "bg-red-500/10",
+      badge: "TOP"
+    },
+    { 
+      path: "/betting", 
+      icon: DollarSign, 
+      label: "Apuestas",
+      color: "text-emerald-400",
+      bgColor: "bg-emerald-500/10",
+      badge: "HOT"
     },
   ];
 
