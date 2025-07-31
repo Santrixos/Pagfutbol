@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE STYLE OF FOOTBALL - MX</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Aplicación completa de fútbol Liga MX con datos en tiempo real, estadísticas de equipos, marcadores en vivo y más. La experiencia definitiva para fanáticos del fútbol mexicano.">
+    <meta name="keywords" content="Liga MX, fútbol mexicano, resultados en vivo, estadísticas, equipos">
+    
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="THE STYLE OF FOOTBALL - MX">
+    <meta property="og:description" content="La aplicación definitiva para fanáticos de la Liga MX con datos en tiempo real">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PayPal SDK -->
+    <script>
+      // Load PayPal SDK dynamically with client ID from backend
+      fetch('/api/paypal/setup')
+        .then(res => res.json())
+        .then(data => {
+          const script = document.createElement('script');
+          script.src = `https://www.paypal.com/sdk/js?client-id=${data.clientToken}&currency=USD`;
+          document.head.appendChild(script);
+        })
+        .catch(err => console.warn('PayPal setup failed:', err));
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    
+    <script>
+        // Tailwind config
+        tailwind.config = {
+            darkMode: ['class'],
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(var(--popover))",
+                            foreground: "hsl(var(--popover-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased bg-background text-foreground">
+    <!-- Loading screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-black flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600 mb-4"></div>
+            <h2 class="text-white text-2xl font-bold">THE STYLE OF FOOTBALL</h2>
+            <p class="text-red-600 text-lg">MX</p>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="min-h-screen bg-gray-900" style="display: none;">
+        <!-- Team Selector (shown initially) -->
+        <div id="team-selector" class="min-h-screen">
+            <!-- Team selector content will be loaded here -->
+        </div>
+
+        <!-- Main Application (shown after team selection) -->
+        <div id="main-app" class="flex h-screen overflow-hidden" style="display: none;">
+            <!-- Sidebar Navigation -->
+            <nav id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-card border-r border-border transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+                <!-- Navigation content will be loaded here -->
+            </nav>
+
+            <!-- Mobile menu overlay -->
+            <div id="mobile-overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden"></div>
+
+            <!-- Main content -->
+            <div class="flex-1 lg:ml-72 overflow-auto">
+                <div class="min-h-screen pt-16 lg:pt-0" id="main-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/components.js"></script>
+    <script src="/static/js/team-config.js"></script>
+    <script src="/static/js/paypal.js"></script>
+    
+    <script>
+        // Initialize app when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                
+                // Initialize the application
+                if (typeof FootballApp !== 'undefined') {
+                    FootballApp.init();
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
